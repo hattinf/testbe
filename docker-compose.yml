@@ -1,0 +1,31 @@
+
+
+version: "3.9"
+services:
+  post:
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: flexapp
+    volumes:
+      - data:/var/lib/postgresql/data
+
+  admin:
+    image: adminer
+    restart: always
+    depends_on:
+      - post
+    ports:
+      - "8282:8282"
+    command:
+      - "php"
+      - "-S"
+      - "[::]:8282"
+      - "-t"
+      - "/var/www/html"
+
+volumes:
+  data:
